@@ -4,12 +4,16 @@ using UnityEngine;
 
 public class GameManeger : MonoBehaviour
 {
+    private float hp_ = 10.0f; // 体力
+
     // メテオ
     List<GameObject> meteoSponerList = new List<GameObject>();//Listを定義
     [SerializeField] public GameObject sponerRigth; // リストの要素
     [SerializeField] public GameObject sponerLeft;
     [SerializeField] public GameObject sponerCenter;
     [SerializeField] public Meteo meteo_;
+    private float instantiateTimer = 0;
+    private float instantiateSpeed = 1.0f;
 
     // タワー
     List<Tower> tawerList = new List<Tower>(); //Listを定義
@@ -23,7 +27,12 @@ public class GameManeger : MonoBehaviour
     private float min_; // 床の左端
     private float max_; // 床の右端
 
-    // 
+    // レティクル
+    [SerializeField] public Reticle reticle_;
+    private Vector3 moucePosition; // マウスポジション(ワールド)
+
+    // シェイク
+    [SerializeField] public Shake shake_;
 
     // Start is called before the first frame update
     void Start()
@@ -46,29 +55,83 @@ public class GameManeger : MonoBehaviour
     {
         // メテオの生成
         MeteoStart();
+        // ミサイルが発射出来るか確認
+        TawerStart();
+        // タワーが壊れる処理
+        TawerDie();
     }
 
     public void MeteoStart()
     {
-        // スポナーをランダムで選択
-        int randomIndex = Random.Range(0, meteoSponerList.Count);
-        GameObject selectedMeteo = meteoSponerList[randomIndex];
-        // メテオを生成
-        Meteo Meteo = Instantiate(meteo_, selectedMeteo.transform);
-        Meteo.SetUp(min_, max_);
+        instantiateTimer += instantiateSpeed * Time.deltaTime;
+
+        // タイマーが規定値以上ならメテオを生成
+        if(instantiateTimer >= 1.0f)
+        {
+            // スポナーをランダムで選択
+            int randomIndex = Random.Range(0, meteoSponerList.Count);
+            GameObject selectedMeteo = meteoSponerList[randomIndex];
+            // メテオを生成
+            Meteo Meteo = Instantiate(meteo_, selectedMeteo.transform);
+            Meteo.SetUp(min_, max_,this);
+            // タイマーリセット
+            instantiateTimer = 0;
+        }
+       
     }
-    public void Reticle()
+    void TawerStart()
     {
         // 左ボタンクリック
         if (Input.GetMouseButtonUp(0))
         {
             // マウスのクリック座標を取得
-            Vector3 mousePosition = Input.mousePosition;
-            // スクリーン座標をワールド座標に変換
-            Vector3 worldPosition = Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, Camera.main.nearClipPlane));
-            // クリック地点にレティクル生成
-            //Instantiate(reticle, worldPosition, Quaternion.identity);
+            moucePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.nearClipPlane));
+            // タワーに発射指令を出す
+            foreach (Tower tawer in tawerList)
+            {
+                // 撃てる奴から1つ呼び出す
+                if (tawer.isShot_)
+                {
+                    // クリック地点にレティクル生成
+                    Reticle reticle = Instantiate(reticle_, moucePosition, Quaternion.identity);
+                    // Shot();呼び出し
+                    tawer.Shot(reticle.transform.position);
+                    tawer.isShot_ = false;
+                    // 1つ見つけたらループを抜ける
+                    break;
+                }
+
+            }
+        }
+    }
+    void TawerDie()
+    {
+        // タワーが生きているか確認
+        foreach (Tower tawer in tawerList)
+        {
+            if (tawer.isDie_)
+            {
+                // シェイクする
+                shake_.StartShake(2.0f, 1.0f);
+                // 一時リストに追加
+                toRemove.Add(tawer);
+            }
+        }
+        // 一時リストからタワーを削除
+        foreach (Tower tawer in toRemove)
+        {
+            tawerList.Remove(tawer);
+        }
+        // タワーが全部なくなったかチェック
+        if (tawerList.Count == 0)
+        {
 
         }
+    }
+    public void Damage()
+    {
+        hp_--;
+        // シェイクする
+        shake_.StartShake(0.5f, 0.5f);
     }
 }

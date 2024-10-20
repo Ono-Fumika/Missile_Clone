@@ -4,18 +4,57 @@ using UnityEngine;
 
 public class Meteo : MonoBehaviour
 {
+    public float speed_ = 2.0f;
     private float min_; // 床の左端
     private float max_; // 床の右端
+    private Vector3 targetPos_;
 
-    public void SetUp(float min,float max)
+    // ゲームマネージャー
+    [SerializeField] public GameManeger gameManeger_;
+    // タワー
+    [SerializeField] public Tower tower_;
+
+    void OnTriggerEnter2D(Collider2D collider)
+    {
+        // 地面に衝突した場合
+        if (collider.gameObject.tag == "Ground")
+        {
+            // 地面にダメージ
+            gameManeger_.Damage();
+            // 隕石を削除
+            Destroy(gameObject);
+        }
+        // ミサイルに衝突した場合
+        if (collider.gameObject.tag == "Missile")
+        {
+            // 隕石を削除
+            Destroy(gameObject);
+        }
+        // タワーに衝突した場合
+        if (collider.gameObject.tag == "Tower")
+        {
+            // 隕石を削除
+            Destroy(gameObject);
+        }
+    }
+
+    public void SetUp(float min, float max, GameManeger gameManeger)
     {
         min_ = min;
         max_ = max;
+        gameManeger_ = gameManeger;
     }
-
+    void Start()
+    {
+        // 目的地をランダムで決める
+        targetPos_ = new Vector3(Random.Range(min_, max_), -5.0f, 0);
+    }
     // Update is called once per frame
     void Update()
     {
-        
+        // 現在の位置から目的地への方向を計算
+        Vector3 direction = (targetPos_ - transform.position).normalized;
+        // 移動
+        transform.position += (direction * speed_ * Time.deltaTime);
     }
 }

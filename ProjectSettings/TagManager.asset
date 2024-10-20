@@ -5,6 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - Tower
+  - Missile
+  - Reticle
+  - Meteo
+  - Ground
+  - Explosion
   layers:
   - Default
   - TransparentFX
