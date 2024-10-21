@@ -15,7 +15,7 @@ public class Tower : MonoBehaviour
     [SerializeField] public Missile missile;
 
     // 爆発エフェクト
-    [SerializeField] public GameObject explosion_;
+    [SerializeField] public TowerExplosion explosion_;
 
     // カラー関連
     private Renderer towerRenderer;
@@ -70,7 +70,7 @@ public class Tower : MonoBehaviour
         {
             isDie_ = true;
             // 爆発を生成
-            //Instantiate(explosion_, transform.position, Quaternion.identity);
+            Instantiate(explosion_, new Vector3(transform.position.x,0, transform.position.z), Quaternion.identity);
             // 自壊する
             Destroy(gameObject);
         }

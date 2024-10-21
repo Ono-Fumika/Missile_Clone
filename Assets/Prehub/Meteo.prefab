@@ -4995,3 +4995,4 @@ MonoBehaviour:
   speed_: 2
   gameManeger_: {fileID: 0}
   tower_: {fileID: 2706501892877856324, guid: a78ec15e2606c5a4282700ce108bab32, type: 3}
+  explosion_: {fileID: 8431390293047399369, guid: 6e906ff1f0212ce42b581c7ce33dd5e6, type: 3}

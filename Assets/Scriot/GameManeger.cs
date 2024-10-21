@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class GameManeger : MonoBehaviour
 {
-    private float hp_ = 10.0f; // 体力
-
     // メテオ
     List<GameObject> meteoSponerList = new List<GameObject>();//Listを定義
     [SerializeField] public GameObject sponerRigth; // リストの要素
@@ -21,20 +19,20 @@ public class GameManeger : MonoBehaviour
     [SerializeField] public Tower tawerCenter;
     [SerializeField] public Tower tawerLeft;
     [SerializeField] public Tower tawerRigth;
-
     // グラウンド
     [SerializeField] SpriteRenderer groundRenderer_; // 床のレンダラー取得
     private float min_; // 床の左端
     private float max_; // 床の右端
-
     // レティクル
     [SerializeField] public Reticle reticle_;
     private Vector3 moucePosition; // マウスポジション(ワールド)
-
     // シェイク
     [SerializeField] public Shake shake_;
+    // ライフバー
+    [SerializeField] public LifeSlider life_;
+    // スコア
+    [SerializeField] public Score score_;
 
-    // Start is called before the first frame update
     void Start()
     {
         // スポナーリストに要素を入れる
@@ -122,16 +120,23 @@ public class GameManeger : MonoBehaviour
         {
             tawerList.Remove(tawer);
         }
-        // タワーが全部なくなったかチェック
+        // タワーが全部なくなったら
         if (tawerList.Count == 0)
         {
-
+            // メテオ生成を速くする
+            instantiateSpeed = 2.0f;
+            meteo_.speed_ = 3.0f;
         }
     }
     public void Damage()
     {
-        hp_--;
+        // ライフを減らす
+        life_.CurrentHp();
         // シェイクする
         shake_.StartShake(0.5f, 0.5f);
+    }
+    public void AddScore()
+    {
+        score_.AddScore();
     }
 }

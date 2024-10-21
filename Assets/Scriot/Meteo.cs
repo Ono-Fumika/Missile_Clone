@@ -13,6 +13,8 @@ public class Meteo : MonoBehaviour
     [SerializeField] public GameManeger gameManeger_;
     // タワー
     [SerializeField] public Tower tower_;
+    // 爆発
+    [SerializeField] public MeteoExplosion explosion_;
 
     void OnTriggerEnter2D(Collider2D collider)
     {
@@ -24,9 +26,13 @@ public class Meteo : MonoBehaviour
             // 隕石を削除
             Destroy(gameObject);
         }
-        // ミサイルに衝突した場合
-        if (collider.gameObject.tag == "Missile")
+        // 爆発に衝突した場合
+        if (collider.gameObject.tag == "Explosion")
         {
+            // スコアを加算
+            gameManeger_.AddScore();
+            // 爆発を生成
+            Instantiate(explosion_, transform.position, Quaternion.identity);
             // 隕石を削除
             Destroy(gameObject);
         }

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5518684194552157068}
   - component: {fileID: 1999443821011291734}
   - component: {fileID: 3864852842024371813}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: MissileParticle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4842,7 +4842,7 @@ GameObject:
   - component: {fileID: 6207811547277452642}
   - component: {fileID: -6402761758236165621}
   - component: {fileID: -4867135948213148047}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Missile
   m_TagString: Missile
   m_Icon: {fileID: 0}
@@ -4905,7 +4905,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: -9095717837082945937, guid: 207ee8102dd4143d288186ef0be518ee, type: 3}
   m_Color: {r: 0.54509807, g: 0.54509807, b: 0.54509807, a: 1}
   m_FlipX: 0
@@ -4929,8 +4929,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d3d74f0d9e93d544b43cc859a357ce5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetPos: {x: 0, y: 0, z: 0}
-  speed_: 5
+  targetPos_: {x: 0, y: 0, z: 0}
+  explosion_: {fileID: 8431390293047399369, guid: 6e906ff1f0212ce42b581c7ce33dd5e6, type: 3}
 --- !u!70 &-4867135948213148047
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
