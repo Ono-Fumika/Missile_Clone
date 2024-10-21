@@ -12,6 +12,7 @@ public class GameManeger : MonoBehaviour
     [SerializeField] public Meteo meteo_;
     private float instantiateTimer = 0;
     private float instantiateSpeed = 1.0f;
+    private float meteoSpeed_ = 2.0f;
 
     // タワー
     List<Tower> tawerList = new List<Tower>(); //Listを定義
@@ -21,8 +22,8 @@ public class GameManeger : MonoBehaviour
     [SerializeField] public Tower tawerRigth;
     // グラウンド
     [SerializeField] SpriteRenderer groundRenderer_; // 床のレンダラー取得
-    private float min_; // 床の左端
-    private float max_; // 床の右端
+    private float widthMin_; // 床の左端
+    private float widthMax_; // 床の右端
     // レティクル
     [SerializeField] public Reticle reticle_;
     private Vector3 moucePosition; // マウスポジション(ワールド)
@@ -32,6 +33,8 @@ public class GameManeger : MonoBehaviour
     [SerializeField] public LifeSlider life_;
     // スコア
     [SerializeField] public Score score_;
+    // ゲームオーバー
+    [SerializeField] public GameOver gameOver_;
 
     void Start()
     {
@@ -44,19 +47,28 @@ public class GameManeger : MonoBehaviour
         tawerList.Add(tawerLeft);
         tawerList.Add(tawerCenter);
         // Groundの両端を取得
-        min_ = groundRenderer_.bounds.min.x;
-        max_ = groundRenderer_.bounds.max.x;
-    }
+        widthMin_ = groundRenderer_.bounds.min.x;
+        widthMax_ = groundRenderer_.bounds.max.x;
+    }   
 
     // Update is called once per frame
     void Update()
     {
-        // メテオの生成
-        MeteoStart();
+       
         // ミサイルが発射出来るか確認
         TawerStart();
         // タワーが壊れる処理
         TawerDie();
+        // hoが0だったらゲームオーバーを呼ぶ
+        if(life_.currentHp <= 0)
+        {
+            gameOver_.gameOver(score_.scoreCount);
+        }
+        else
+        {
+            // メテオの生成
+            MeteoStart();
+        }
     }
 
     public void MeteoStart()
@@ -71,7 +83,7 @@ public class GameManeger : MonoBehaviour
             GameObject selectedMeteo = meteoSponerList[randomIndex];
             // メテオを生成
             Meteo Meteo = Instantiate(meteo_, selectedMeteo.transform);
-            Meteo.SetUp(min_, max_,this);
+            Meteo.SetUp(widthMin_, widthMax_, meteoSpeed_, this);
             // タイマーリセット
             instantiateTimer = 0;
         }
@@ -125,7 +137,7 @@ public class GameManeger : MonoBehaviour
         {
             // メテオ生成を速くする
             instantiateSpeed = 2.0f;
-            meteo_.speed_ = 3.0f;
+            meteoSpeed_ = 4.0f;
         }
     }
     public void Damage()
@@ -137,6 +149,7 @@ public class GameManeger : MonoBehaviour
     }
     public void AddScore()
     {
+        // スコア加算
         score_.AddScore();
     }
 }
