@@ -5,21 +5,15 @@ using UnityEngine;
 public class GameManeger : MonoBehaviour
 {
     // メテオ
-    List<GameObject> meteoSponerList = new List<GameObject>();//Listを定義
-    [SerializeField] public GameObject sponerRigth; // リストの要素
-    [SerializeField] public GameObject sponerLeft;
-    [SerializeField] public GameObject sponerCenter;
+    [SerializeField]  List<GameObject> meteoSponerList = new List<GameObject>();//Listを定義
     [SerializeField] public Meteo meteo_;
     private float instantiateTimer = 0;
     private float instantiateSpeed = 1.0f;
     private float meteoSpeed_ = 2.0f;
 
     // タワー
-    List<Tower> tawerList = new List<Tower>(); //Listを定義
+    [SerializeField]  List<Tower> tawerList = new List<Tower>(); //Listを定義
     List<Tower> toRemove = new List<Tower>(); // 一時リスト（削除用）
-    [SerializeField] public Tower tawerCenter;
-    [SerializeField] public Tower tawerLeft;
-    [SerializeField] public Tower tawerRigth;
     // グラウンド
     [SerializeField] SpriteRenderer groundRenderer_; // 床のレンダラー取得
     private float widthMin_; // 床の左端
@@ -38,10 +32,6 @@ public class GameManeger : MonoBehaviour
 
     void Start()
     {
-        // スポナーリストに要素を入れる
-        meteoSponerList = new List<GameObject> { sponerRigth, sponerLeft, sponerCenter };
-        // タワーリストに要素を入れる
-        tawerList = new List<Tower> { tawerRigth, tawerLeft, tawerCenter };
         // Groundの両端を取得
         widthMin_ = groundRenderer_.bounds.min.x;
         widthMax_ = groundRenderer_.bounds.max.x;
