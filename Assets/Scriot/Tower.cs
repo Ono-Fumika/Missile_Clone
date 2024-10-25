@@ -13,7 +13,6 @@ public class Tower : MonoBehaviour
 
     // ミサイル
     [SerializeField] public Missile missile;
-
     // 爆発エフェクト
     [SerializeField] public TowerExplosion explosion_;
 
@@ -22,14 +21,14 @@ public class Tower : MonoBehaviour
     private Color originalColor;
     private Color cooldownColor = Color.red;
 
-    public void Shot(Vector3 worldMoucePosition)
+    public void Shot(Vector3 worldMoucePosition, GameObject reticle)
     {
         worldMoucePosition_ = worldMoucePosition;
         if (isShot_)
         {
             // タワーから生成
             Missile missileInstence_ = Instantiate(missile, transform.position, Quaternion.identity);
-            missileInstence_.SetUp(worldMoucePosition_);
+            missileInstence_.SetUp(worldMoucePosition_,reticle);
             // 生成したら撃てなくなる
             isShot_ = false;
         }

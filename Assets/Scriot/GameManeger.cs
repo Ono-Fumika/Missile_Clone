@@ -25,7 +25,7 @@ public class GameManeger : MonoBehaviour
     private float widthMin_; // 床の左端
     private float widthMax_; // 床の右端
     // レティクル
-    [SerializeField] public Reticle reticle_;
+    [SerializeField] public GameObject reticle_;
     private Vector3 moucePosition; // マウスポジション(ワールド)
     // シェイク
     [SerializeField] public Shake shake_;
@@ -39,13 +39,9 @@ public class GameManeger : MonoBehaviour
     void Start()
     {
         // スポナーリストに要素を入れる
-        meteoSponerList.Add(sponerRigth);
-        meteoSponerList.Add(sponerLeft);
-        meteoSponerList.Add(sponerCenter);
+        meteoSponerList = new List<GameObject> { sponerRigth, sponerLeft, sponerCenter };
         // タワーリストに要素を入れる
-        tawerList.Add(tawerRigth);
-        tawerList.Add(tawerLeft);
-        tawerList.Add(tawerCenter);
+        tawerList = new List<Tower> { tawerRigth, tawerLeft, tawerCenter };
         // Groundの両端を取得
         widthMin_ = groundRenderer_.bounds.min.x;
         widthMax_ = groundRenderer_.bounds.max.x;
@@ -103,9 +99,9 @@ public class GameManeger : MonoBehaviour
                 if (tawer.isShot_)
                 {
                     // クリック地点にレティクル生成
-                    Reticle reticle = Instantiate(reticle_, moucePosition, Quaternion.identity);
+                    GameObject reticle = Instantiate(reticle_, moucePosition, Quaternion.identity);
                     // Shot();呼び出し
-                    tawer.Shot(reticle.transform.position);
+                    tawer.Shot(reticle.transform.position, reticle);
                     tawer.isShot_ = false;
                     // 1つ見つけたらループを抜ける
                     break;

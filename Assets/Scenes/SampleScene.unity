@@ -1589,7 +1589,7 @@ MonoBehaviour:
   tawerLeft: {fileID: 1420116951}
   tawerRigth: {fileID: 1290183339}
   groundRenderer_: {fileID: 1141276090}
-  reticle_: {fileID: 4365474924303120640, guid: 4dc58619b8bb39a40afd04553fc98606, type: 3}
+  reticle_: {fileID: 3909261277015854062, guid: 4dc58619b8bb39a40afd04553fc98606, type: 3}
   shake_: {fileID: 519420033}
   life_: {fileID: 1774381856}
   score_: {fileID: 829582271}
